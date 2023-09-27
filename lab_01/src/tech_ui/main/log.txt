@@ -1,0 +1,51 @@
+25-04-2023 08-37-50 : INFO : App started
+25-04-2023 08-38-31 : INFO : App started
+25-04-2023 08-38-39 : INFO : AUTH command handled
+25-04-2023 08-38-48 : ERROR : User authorization failed
+25-04-2023 08-39-16 : INFO : AUTH command handled
+25-04-2023 08-39-20 : INFO : Get user id success
+25-04-2023 08-39-20 : INFO : Get user by id success
+25-04-2023 08-39-20 : INFO : User authorization success
+25-04-2023 08-39-20 : INFO : Get user id success
+25-04-2023 08-39-36 : INFO : App exited
+25-04-2023 08-43-52 : INFO : App started
+25-04-2023 08-44-00 : INFO : AUTH command handled
+25-04-2023 08-44-04 : INFO : Get user id success
+25-04-2023 08-44-04 : INFO : Get user by id success
+25-04-2023 08-44-04 : ERROR : User authorization failed
+25-04-2023 08-46-23 : INFO : App exited
+25-04-2023 08-46-26 : INFO : App started
+25-04-2023 08-46-32 : INFO : AUTH command handled
+25-04-2023 08-46-39 : ERROR : User authorization failed
+25-04-2023 08-46-47 : INFO : ADD_MANAGER command handled
+25-04-2023 08-46-47 : WARNING : Failed access attempt to command
+25-04-2023 08-48-36 : INFO : App exited
+25-04-2023 08-58-00 : ERROR : User authorization failed
+25-04-2023 08-58-19 : INFO : App started
+25-04-2023 08-58-21 : INFO : AUTH command handled
+25-04-2023 08-58-22 : ERROR : User authorization failed
+25-04-2023 08-58-24 : INFO : App exited
+25-04-2023 09-02-25 : INFO : App started
+25-04-2023 09-02-28 : INFO : AUTH command handled
+25-04-2023 09-02-31 : ERROR : User authorization failed
+25-04-2023 09-02-51 : INFO : App exited
+25-04-2023 09-03-23 : ERROR : User authorization failed
+25-04-2023 09-46-40 : INFO : App started
+25-04-2023 09-46-49 : INFO : VIEW_ALL_BANKS command handled
+25-04-2023 09-47-02 : INFO : App started
+25-04-2023 09-47-20 : INFO : AUTH command handled
+25-04-2023 09-47-24 : INFO : Get user id success
+25-04-2023 09-47-24 : INFO : Get user by id success
+25-04-2023 09-47-24 : INFO : User authorization success
+25-04-2023 09-47-24 : INFO : Get user id success
+25-04-2023 09-47-34 : INFO : VIEW_ALL_PRODUCTS command handled
+25-04-2023 09-48-17 : INFO : UPDATE_PRODUCT command handled
+25-04-2023 09-48-26 : INFO : VIEW_ALL_BANKS command handled
+25-04-2023 09-49-49 : INFO : App started
+25-04-2023 09-49-50 : INFO : VIEW_ALL_BANKS command handled
+25-04-2023 09-51-31 : INFO : VIEW_ALL_BANKS command handled
+25-04-2023 09-53-40 : INFO : App exited
+25-04-2023 09-53-43 : INFO : App started
+25-04-2023 09-53-45 : INFO : VIEW_ALL_BANKS command handled
+25-04-2023 09-53-45 : INFO : Get all banks success
+25-04-2023 10-05-25 : INFO : App exited

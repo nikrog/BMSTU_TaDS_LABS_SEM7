@@ -1,0 +1,9 @@
+DB = postgres
+User = postgres
+Host = localhost
+NameDB = postgres
+Password = admin
+Port = 5435
+MinPasswordLen = 5
+MinLoginLen = 1
+LogLevel = 1
