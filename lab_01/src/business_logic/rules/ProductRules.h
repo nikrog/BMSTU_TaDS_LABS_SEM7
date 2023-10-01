@@ -15,6 +15,7 @@ private:
     ILogger *logger;
 public:
     ProductRules(IProductRepository &repository, IBankRepository &bankRepository, ILogger &logger);
+    //ProductRules(IProductRepository &repository, IBankRepository &bankRepository);
     ProductRules();
     ~ProductRules();
 

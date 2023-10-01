@@ -1,12 +1,19 @@
 #include "ProductRules.h"
 
 
+/*ProductRules::ProductRules(IProductRepository &repository, IBankRepository &bankRepository)
+{
+    this->repository = &repository;
+    this->bankRepository = &bankRepository;
+}*/
+
 ProductRules::ProductRules(IProductRepository &repository, IBankRepository &bankRepository, ILogger &logger)
 {
     this->repository = &repository;
     this->bankRepository = &bankRepository;
     this->logger = &logger;
 }
+
 ProductRules::ProductRules()
 {}
 ProductRules::~ProductRules()
