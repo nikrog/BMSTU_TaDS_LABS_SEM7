@@ -55,7 +55,7 @@ User UserRules::getUser(int id)
 
 int UserRules::addUser(UserInfo inf)
 {
-    printf("%d", this->password_len);
+    //printf("%d", this->password_len);
     if ((inf.permission > ADMIN) || (inf.permission < CLIENT))
         throw UserAddErrorException(__FILE__, typeid(*this).name(), __LINE__);
     if (inf.login.length() < this->login_len or inf.password.length() < this->password_len)
@@ -79,6 +79,7 @@ int UserRules::addUser(UserInfo inf)
 
 void UserRules::deleteUser(int id) {
     User tmpUser = this->repository->getUserByID(id);
+    printf("%d", tmpUser.getID());
     if (tmpUser.getID() > NONE)
     {
         try {

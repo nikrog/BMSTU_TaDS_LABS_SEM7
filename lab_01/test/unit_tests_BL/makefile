@@ -1,6 +1,9 @@
 testsUser.exe: TestUserRules.o MockUserRepository.o UserRules.o ModelUser.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
+testsUserMock.exe: TestUserRulesMock.o MockUserRepository.o UserRules.o ModelUser.o UserOM.o UserBuilder.o Logger.o exceptions.o
+	g++ -o $@ $^ -lgtest -lgmock -pthread
+	
 testsManager.exe: TestManagerRules.o MockManagerRepository.o MockUserRepository.o MockBankRepository.o MockClientRepository.o ManagerRules.o ModelManager.o ModelClient.o ModelUser.o ModelBank.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
@@ -16,7 +19,7 @@ testsProduct.exe: TestProductRules.o ProductStub.o BankStub.o ProductRules.o Mod
 testsRequest.exe: TestRequestRules.o MockRequestRepository.o MockClientRepository.o MockUserRepository.o MockManagerRepository.o MockProductRepository.o RequestRules.o ModelRequest.o ModelProduct.o ModelUser.o ModelClient.o ModelManager.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
-ModelUser.o: ../../business_logic/models/ModelUser.cpp
+ModelUser.o: ../../src/business_logic/models/ModelUser.cpp
 	g++ -c -o $@ $<
 
 ModelManager.o: ../../business_logic/models/ModelManager.cpp
@@ -36,7 +39,10 @@ ModelRequest.o: ../../business_logic/models/ModelRequest.cpp
 
 TestUserRules.o: TestUserRules.cpp
 	g++ -c -o $@ $<
-
+	
+TestUserRulesMock.o: TestUserRulesMock.cpp
+	g++ -c -o $@ $<
+	
 TestManagerRules.o: TestManagerRules.cpp
 	g++ -c -o $@ $<
 
@@ -49,7 +55,7 @@ TestBankRules.o: TestBankRules.cpp
 TestProductRules.o: TestProductRules.cpp
 	g++ -c -o $@ $<
 	
-MockUserRepository.o: ../../data_access/MockRepositories/MockUserRepository.cpp
+MockUserRepository.o: ../../src/data_access/MockRepositories/MockUserRepository.cpp
 	g++ -c -o $@ $<
 
 MockManagerRepository.o: ../../data_access/MockRepositories/MockManagerRepository.cpp
@@ -73,7 +79,7 @@ MockClientRepository.o: ../../data_access/MockRepositories/MockClientRepository.
 BankStub.o: ../stub/BankStub.cpp
 	g++ -c -o $@ $<
 
-UserRules.o: ../../business_logic/rules/UserRules.cpp
+UserRules.o: ../../src/business_logic/rules/UserRules.cpp
 	g++ -c -o $@ $<
 
 ManagerRules.o: ../../business_logic/rules/ManagerRules.cpp
@@ -98,8 +104,9 @@ Logger.o: ../../src/logger/Logger.cpp
 	g++ -c -o $@ $<
 
 
-
 %.o: ../../business_logic/rules/%.c
+	g++ -c -o $@ $<
+%.o: ../builders/%.cpp
 	g++ -c -o $@ $<
 	
 f.o: f.cpp
