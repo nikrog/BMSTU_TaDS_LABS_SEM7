@@ -7,14 +7,20 @@
 #include "../../src/data_access/MockRepositories/MockProductRepository.h"
 #include "../../src/logger/Logger.h"
 
+struct TestProductRules : public testing::Test {
+  Logger *logger;
 
-TEST(TestProductRules, TestGetProductPositive)
+  void SetUp() {logger = new Logger("log_file.txt", FATAL);}
+  void TearDown() { delete logger; }
+};
+
+
+TEST_F(TestProductRules, TestGetProductPositive)
 {
 // Arrange
 BankStub bankRepository = BankStub();
 ProductStub productRepository = ProductStub();
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 // Act
 Product tmpProduct = prules.getProduct(2);
@@ -31,22 +37,20 @@ EXPECT_EQ(tmpProduct.getCurrency(), DOLLAR);
 EXPECT_EQ(tmpProduct.getAvgRating(), 0);
 }
 
-TEST(TestProductRules, TestGetProductNegative)
+TEST_F(TestProductRules, TestGetProductNegative)
 {
 BankStub bankRepository = BankStub();
 ProductStub productRepository = ProductStub();
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.getProduct(3), ProductNotFoundException);
 }
 
-TEST(TestProductRules, TestGetProductByNamePositive)
+TEST_F(TestProductRules, TestGetProductByNamePositive)
 {
 BankStub bankRepository = BankStub();
 ProductStub productRepository = ProductStub();
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 Product tmpProduct = prules.getProductByName("second");
 
@@ -61,22 +65,20 @@ EXPECT_EQ(tmpProduct.getCurrency(), DOLLAR);
 EXPECT_EQ(tmpProduct.getAvgRating(), 0);
 }
 
-TEST(TestProductRules, TestGetProductByNameNegative)
+TEST_F(TestProductRules, TestGetProductByNameNegative)
 {
 BankStub bankRepository = BankStub();
 ProductStub productRepository = ProductStub();
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.getProductByName("third"), ProductNotFoundException);
 }
 
-TEST(TestProductRules, TestGetAllProducts)
+TEST_F(TestProductRules, TestGetAllProducts)
 {
 BankStub bankRepository = BankStub();
 ProductStub productRepository = ProductStub();
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 std::vector<Product> products = prules.getAllProducts();
 
@@ -85,7 +87,7 @@ EXPECT_EQ(products[0].getName(), "first");
 EXPECT_EQ(products[1].getName(), "second");
 }
 
-TEST(TestProductRules, TestGetProductByRatingPositive)
+TEST_F(TestProductRules, TestGetProductByRatingPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -95,10 +97,9 @@ products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(2, 1, DEPOSIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 10, 2));
 products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 1000000, DOLLAR, 14, 3));
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
-Logger logger = Logger("log_file.txt", FATAL);
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 products = prules.getProductByRating(DEPOSIT, 4.5);
 EXPECT_EQ(products.size(), 2);
@@ -106,7 +107,7 @@ EXPECT_EQ(products[0].getName(), "second");
 EXPECT_EQ(products[1].getName(), "third");
 }
 
-TEST(TestProductRules, TestGetProductByRatingNegative)
+TEST_F(TestProductRules, TestGetProductByRatingNegative)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -118,14 +119,13 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 
 ASSERT_THROW(prules.getProductByRating(DEPOSIT, -1.0), ProductGetErrorException);
 }
 
-TEST(TestProductRules, TestGetProductByBankPositive)
+TEST_F(TestProductRules, TestGetProductByBankPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -137,8 +137,7 @@ products.push_back(Product(3, 2, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 2, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 products = prules.getProductByBank(DEPOSIT, 2);
 
@@ -147,7 +146,7 @@ EXPECT_EQ(products[0].getName(), "first");
 EXPECT_EQ(products[1].getName(), "third");
 }
 
-TEST(TestProductRules, TestGetProductByBankNegativeNonExistentBank)
+TEST_F(TestProductRules, TestGetProductByBankNegativeNonExistentBank)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -159,13 +158,12 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.getProductByBank(DEPOSIT, 3), ProductGetErrorException);
 }
 
-TEST(TestProductRules, TestGetProductBySumPositive)
+TEST_F(TestProductRules, TestGetProductBySumPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -177,14 +175,13 @@ products.push_back(Product(3, 2, DEPOSIT, "third", 7.5, 180, 750,  5000, 1000000
 products.push_back(Product(4, 2, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 products = prules.getProductBySum(DEPOSIT, 10000, 500000);
 EXPECT_EQ(products.size(), 1);
 EXPECT_EQ(products[0].getName(), "third");
 }
 
-TEST(TestProductRules, TestGetProductBySumNegativeIncorrectSumNegative)
+TEST_F(TestProductRules, TestGetProductBySumNegativeIncorrectSumNegative)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -196,13 +193,12 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.getProductBySum(DEPOSIT, -10000, 500000), ProductGetErrorException);
 }
 
-TEST(TestProductRules, TestGetProductBySumNegativeMinSumBiggerThanMaxSum)
+TEST_F(TestProductRules, TestGetProductBySumNegativeMinSumBiggerThanMaxSum)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -214,13 +210,12 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.getProductBySum(DEPOSIT, 1000000, 500000), ProductGetErrorException);
 }
 
-TEST(TestProductRules, TestDeleteProductPositive)
+TEST_F(TestProductRules, TestDeleteProductPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -232,15 +227,14 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 prules.deleteProduct(3);
 
 ASSERT_THROW(prules.getProduct(3), ProductNotFoundException);
 }
 
-TEST(TestProductRules, TestDeleteProductNegative)
+TEST_F(TestProductRules, TestDeleteProductNegative)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -252,13 +246,12 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.deleteProduct(5), ProductNotFoundException);
 }
 
-TEST(TestProductRules, TestAddProductPositive)
+TEST_F(TestProductRules, TestAddProductPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -270,8 +263,7 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 int id = prules.addProduct({.bank_id=2, .type=CREDIT, .name="abc", .rate=10.5, .min_time=100, .max_time=365, .min_sum=1000,
  .max_sum=700000, .currency=ROUBLE, .sum_rating=10, .count_rating=3});
@@ -279,7 +271,7 @@ int id = prules.addProduct({.bank_id=2, .type=CREDIT, .name="abc", .rate=10.5, .
 EXPECT_EQ(id, 5);
 }
 
-TEST(TestProductRules, TestAddProductNegativeEmptyName)
+TEST_F(TestProductRules, TestAddProductNegativeEmptyName)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -291,14 +283,13 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 
 ASSERT_THROW(prules.addProduct({.bank_id=2, .type=CREDIT, .name="", .rate=10.5, .min_time=100, .max_time=365, .min_sum=1000,
  .max_sum=700000, .currency=ROUBLE, .sum_rating=10, .count_rating=3}), ProductAddErrorException);
 }
 
-TEST(TestProductRules, TestUpdateProductPositive)
+TEST_F(TestProductRules, TestUpdateProductPositive)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -310,8 +301,7 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 Product tmpProduct = prules.getProduct(2);
 tmpProduct.setRate(8.5);
 
@@ -320,7 +310,7 @@ prules.updateProduct(tmpProduct);
 EXPECT_EQ(prules.getProduct(2).getRate(), 8.5);
 }
 
-TEST(TestProductRules, TestUpdateProductNegativeIncorrectRate)
+TEST_F(TestProductRules, TestUpdateProductNegativeIncorrectRate)
 {
 std::vector<Bank> banks;
 std::vector<Product> products;
@@ -332,8 +322,7 @@ products.push_back(Product(3, 1, DEPOSIT, "third", 7.5, 180, 750,  50000, 100000
 products.push_back(Product(4, 1, CREDIT, "dddd", 7.5, 180, 750,  50000, 1000000, DOLLAR, 15, 3));
 MockBankRepository bankRepository(banks);
 MockProductRepository productRepository(products);
-Logger logger = Logger("log_file.txt", FATAL);
-ProductRules prules(productRepository, bankRepository, logger);
+ProductRules prules(productRepository, bankRepository, *logger);
 Product tmpProduct = prules.getProduct(2);
 tmpProduct.setMinTime(-1);
 

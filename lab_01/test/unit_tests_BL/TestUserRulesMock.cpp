@@ -24,11 +24,17 @@ public:
     MOCK_METHOD(void, setRole, (Roles role), (override));
 };
 
-TEST(TestUserRules, TestAddUserPositive)
+struct TestUserRules : public testing::Test {
+  Logger *logger;
+
+  void SetUp() {logger = new Logger("log_file.txt", FATAL);}
+  void TearDown() { delete logger; }
+};
+
+TEST_F(TestUserRules, TestAddUserPositive)
 {
     MockUser userRepository = MockUser();
-    Logger logger = Logger("log_file.txt", FATAL);
-    UserRules urules(userRepository, logger);
+    UserRules urules(userRepository, *logger);
   
     EXPECT_CALL(userRepository, getAllUsers()).Times(1);
     EXPECT_CALL(userRepository, addUser(testing::_)).Times(1).WillOnce(testing::Return(1));
@@ -38,11 +44,10 @@ TEST(TestUserRules, TestAddUserPositive)
     urules.addUser({.login="789", .password="11111", .permission=CLIENT});
 }
 
-TEST(TestUserRules, TestAddUserIncorrectPasswordShort)
+TEST_F(TestUserRules, TestAddUserIncorrectPasswordShort)
 {
     MockUser userRepository = MockUser();
-    Logger logger = Logger("log_file.txt", FATAL);
-    UserRules urules(userRepository, logger);
+    UserRules urules(userRepository, *logger);
 
     EXPECT_CALL(userRepository, getAllUsers()).Times(0);
     EXPECT_CALL(userRepository, addUser(testing::_)).Times(0);
@@ -51,11 +56,10 @@ TEST(TestUserRules, TestAddUserIncorrectPasswordShort)
     ASSERT_THROW(urules.addUser({.login="789", .password="111", .permission=CLIENT}), UserAddErrorException);
 }
 
-TEST(TestUserRules, TestAddUserIncorrectLoginEmpty)
+TEST_F(TestUserRules, TestAddUserIncorrectLoginEmpty)
 {
     MockUser userRepository = MockUser();
-    Logger logger = Logger("log_file.txt", FATAL);
-    UserRules urules(userRepository, logger);
+    UserRules urules(userRepository, *logger);
 
     EXPECT_CALL(userRepository, getAllUsers()).Times(0);
     EXPECT_CALL(userRepository, addUser(testing::_)).Times(0);
@@ -64,13 +68,12 @@ TEST(TestUserRules, TestAddUserIncorrectLoginEmpty)
     ASSERT_THROW(urules.addUser({.login="", .password="111", .permission=CLIENT}), UserAddErrorException);
 }
 
-TEST(TestUserRules, TestAddUserIncorrectLoginDuplicate)
+TEST_F(TestUserRules, TestAddUserIncorrectLoginDuplicate)
 {
     std::vector<User> users;
     users.push_back(UserOM().client(1).withLogin("abc").build());
     MockUser userRepository = MockUser();
-    Logger logger = Logger("log_file.txt", FATAL);
-    UserRules urules(userRepository, logger);
+    UserRules urules(userRepository, *logger);
 
     EXPECT_CALL(userRepository, getAllUsers()).Times(1).WillOnce(testing::Return(users));
     EXPECT_CALL(userRepository, addUser(testing::_)).Times(0);
@@ -79,150 +82,155 @@ TEST(TestUserRules, TestAddUserIncorrectLoginDuplicate)
     ASSERT_THROW(urules.addUser({.login="abc", .password="111111", .permission=CLIENT}), UserAddErrorException);
 }
 
-TEST(TestUserRules, TestDeleteUserPositive)
+TEST_F(TestUserRules, TestDeleteUserPositive)
 {
 
     MockUser userRepository = MockUser();
-    Logger logger = Logger("log_file.txt", FATAL);
-    UserRules urules(userRepository, logger);
+    UserRules urules(userRepository, *logger);
 
-    EXPECT_CALL(userRepository, getUserByID(1)).Times(2).WillOnce(testing::Return(UserOM().client(1).withLogin( \
+    EXPECT_CALL(userRepository, getUserByID(1)).Times(1).WillOnce(testing::Return(UserOM().client(1).withLogin( \
         "789").withPassword("11111").build()));
     EXPECT_CALL(userRepository, deleteEl(testing::_)).Times(1);
 
     urules.deleteUser(1);
 }
 
-/*TEST(TestUserRules, TestDeleteUserNegative)
+TEST_F(TestUserRules, TestDeleteUserNegative)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.deleteUser(2), UserNotFoundException);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1);
+    EXPECT_CALL(userRepository, addUser(testing::_)).Times(0);
+
+    ASSERT_THROW(urules.deleteUser(2), UserNotFoundException);
 }
 
-TEST(TestUserRules, TestGetAllUsers)
+TEST_F(TestUserRules, TestGetAllUsers)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-users = urules.getAllUsers();
-EXPECT_EQ(users.size(), 2);
+    std::vector<User> users;
+    users.push_back(UserOM().manager(1).build());
+    users.push_back(UserOM().client(2).build());
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getAllUsers()).Times(1).WillOnce(testing::Return(users));
+
+    users = urules.getAllUsers();
+
+    EXPECT_EQ(users.size(), 2);
 }
 
-TEST(TestUserRules, TestGetUserIDPositive)
+TEST_F(TestUserRules, TestGetUserIDPositive)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-int id = urules.getUserID("def");
-EXPECT_EQ(id, 2);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserID("def")).Times(1).WillOnce(testing::Return(2));
+
+    int id = urules.getUserID("def");
 }
 
-TEST(TestUserRules, TestGetUserIDNegativeNotFound)
+TEST_F(TestUserRules, TestGetUserIDNegativeNotFound)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.getUserID("ghk"), UserNotFoundException);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserID("ghk")).Times(1).WillOnce(testing::Return(NONE));
+    ASSERT_THROW(urules.getUserID("ghk"), UserNotFoundException);
 }
 
-TEST(TestUserRules, TestUpdateUserLoginPositive)
+TEST_F(TestUserRules, TestUpdateUserLoginPositive)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-urules.updateUserLogin(2, "ghk");
-User tmpUser = urules.getUser(2);
-EXPECT_EQ(tmpUser.getLogin(), "ghk");
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(UserOM().client(2).withLogin("ghk").build()));
+    EXPECT_CALL(userRepository, getAllUsers()).Times(1);
+    EXPECT_CALL(userRepository, updateEl(testing::_)).Times(1);
+
+    urules.updateUserLogin(2, "ghk");
 }
 
-TEST(TestUserRules, TestUpdateUserPasswordPositive)
+TEST_F(TestUserRules, TestUpdateUserPasswordPositive)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-urules.updateUserPassword(2, "88888");
-User tmpUser = urules.getUser(2);
-EXPECT_EQ(tmpUser.getPassword(), "88888");
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(UserOM().client(2).withPassword("88888").build()));
+    EXPECT_CALL(userRepository, updateEl(testing::_)).Times(1);
+
+    urules.updateUserPassword(2, "88888");
 }
 
-TEST(TestUserRules, TestUpdateUserPermissionPositive)
+TEST_F(TestUserRules, TestUpdateUserPermissionPositive)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-urules.updateUserPermission(2, MANAGER);
-User tmpUser = urules.getUser(2);
-EXPECT_EQ(tmpUser.getUserRole(), MANAGER);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(UserOM().manager(2).build()));
+    EXPECT_CALL(userRepository, updateEl(testing::_)).Times(1);
+
+    urules.updateUserPermission(2, MANAGER);
 }
 
-TEST(TestUserRules, TestUpdateUserNegativeNotFound)
+TEST_F(TestUserRules, TestUpdateUserNegativeNotFound)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.updateUserLogin(3, "ghk"), UserNotFoundException);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(3)).Times(1);
+
+    ASSERT_THROW(urules.updateUserLogin(3, "ghk"), UserNotFoundException);
 }
 
-TEST(TestUserRules, TestUpdateUserNegativeShortPassword)
+TEST_F(TestUserRules, TestUpdateUserNegativeShortPassword)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.updateUserPassword(2, "ghk"), UserUpdateErrorException);
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(UserOM().manager(2).build()));
+
+    ASSERT_THROW(urules.updateUserPassword(2, "ghk"), UserUpdateErrorException);
 }
 
-TEST(TestUserRules, TestUpdateUserNegativeExistedLogin)
+TEST_F(TestUserRules, TestUpdateUserNegativeExistedLogin)
 {
-std::vector<User> users;
-users.push_back(User(1, "login", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.updateUserLogin(2, "login"), UserUpdateErrorException);
+    std::vector<User> users;
+    users.push_back(UserOM().manager(1).withLogin("login").build());
+    users.push_back(UserOM().client(2).build());
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(users.at(1)));
+    EXPECT_CALL(userRepository, getAllUsers()).Times(1).WillOnce(testing::Return(users));
+    EXPECT_CALL(userRepository, updateEl(testing::_)).Times(0);
+
+    ASSERT_THROW(urules.updateUserLogin(2, "login"), UserUpdateErrorException);
 }
 
-TEST(TestUserRules, TestGetUserPositive)
+TEST_F(TestUserRules, TestGetUserPositive)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-User tmpUser = urules.getUser(2);
-EXPECT_EQ(tmpUser.getID(), 2);
-EXPECT_EQ(tmpUser.getLogin(), "def");
-EXPECT_EQ(tmpUser.getPassword(), "11112");
-EXPECT_EQ(tmpUser.getUserRole(), CLIENT);
+    std::vector<User> users;
+    users.push_back(UserOM().manager(1).withLogin("login").build());
+    users.push_back(UserOM().client(2).build());
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(2)).Times(1).WillOnce(testing::Return(users.at(1)));
+
+    urules.getUser(2);
 }
 
-TEST(TestUserRules, TestGetUserNegativeNotFound)
+TEST_F(TestUserRules, TestGetUserNegativeNotFound)
 {
-std::vector<User> users;
-users.push_back(User(1, "abc", "11112", CLIENT));
-users.push_back(User(2, "def", "11112", CLIENT));
-MockUserRepository userRepository(users);
-UserRules urules(userRepository);
-ASSERT_THROW(urules.getUser(3), UserNotFoundException);
-}*/
+    MockUser userRepository = MockUser();
+    UserRules urules(userRepository, *logger);
+
+    EXPECT_CALL(userRepository, getUserByID(1)).Times(1).WillOnce(testing::Return(User()));
+
+    ASSERT_THROW(urules.getUser(1), UserNotFoundException);
+}
 
 
 int main(int argc, char **argv) {

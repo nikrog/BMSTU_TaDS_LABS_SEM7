@@ -3,6 +3,7 @@ rm -R in
 mkdir in
 export GTEST_OUTPUT="xml:./in/"
 export GTEST_SHUFFLE=1
+./testsUserMock.exe
 ./testsBank.exe
 ./testsProduct.exe
 python2 ../gen_report_scripts/genHtmlReportFromGtest.py "out/gtest_report.html" "in/*.xml"

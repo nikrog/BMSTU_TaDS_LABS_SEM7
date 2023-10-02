@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites tests="13" failures="0" disabled="0" errors="0" time="0" timestamp="2023-10-01T15:32:34.045" name="AllTests">
-  <testsuite name="TestBankRules" tests="13" failures="0" disabled="0" skipped="0" errors="0" time="0" timestamp="2023-10-01T15:32:34.045">
-    <testcase name="TestGetBankPositive" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestGetBankNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestGetBankByNamePositive" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestGetBankByNameNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestGetAllBanks" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestDeleteBankPositive" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestDeleteBankNegative" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestAddBankPositive" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestAddBankNegativeEmptyName" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestAddBankNegativeIncorrectLicense" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestUpdateBankPositive" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestUpdateBankNegativeEmptyName" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
-    <testcase name="TestUpdateBankNegativeIncorrectLicense" status="run" result="completed" time="0" timestamp="2023-10-01T15:32:34.045" classname="TestBankRules" />
+<testsuites tests="13" failures="0" disabled="0" errors="0" time="0" timestamp="2023-10-02T20:35:08.124" random_seed="34010" name="AllTests">
+  <testsuite name="TestBankRules" tests="13" failures="0" disabled="0" skipped="0" errors="0" time="0" timestamp="2023-10-02T20:35:08.124">
+    <testcase name="TestGetBankNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestUpdateBankNegativeEmptyName" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestUpdateBankNegativeIncorrectLicense" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestGetBankPositive" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestUpdateBankPositive" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestDeleteBankNegative" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestAddBankNegativeIncorrectLicense" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestGetAllBanks" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestAddBankPositive" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestGetBankByNamePositive" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestGetBankByNameNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestAddBankNegativeEmptyName" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
+    <testcase name="TestDeleteBankPositive" status="run" result="completed" time="0" timestamp="2023-10-02T20:35:08.124" classname="TestBankRules" />
   </testsuite>
 </testsuites>

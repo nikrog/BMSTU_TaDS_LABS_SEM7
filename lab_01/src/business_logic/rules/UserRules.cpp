@@ -79,14 +79,14 @@ int UserRules::addUser(UserInfo inf)
 
 void UserRules::deleteUser(int id) {
     User tmpUser = this->repository->getUserByID(id);
-    printf("%d", tmpUser.getID());
+    //printf("%d", tmpUser.getID());
     if (tmpUser.getID() > NONE)
     {
         try {
             this->repository->deleteEl(id);
-            User testUser = this->repository->getUserByID(id);
+            /*User testUser = this->repository->getUserByID(id);
             if (testUser.getID() != NONE)
-                throw UserDeleteErrorException(__FILE__, typeid(*this).name(), __LINE__);
+                throw UserDeleteErrorException(__FILE__, typeid(*this).name(), __LINE__);*/
         }
         catch (UserNotFoundException) {}
     }
@@ -110,11 +110,11 @@ void UserRules::updateUserLogin(int id, std::string new_login)
             throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
     tmpUser.setLogin(new_login);
     this->repository->updateEl(tmpUser);
-    tmpUser = this->repository->getUserByID(id);
+    /*tmpUser = this->repository->getUserByID(id);
     if (tmpUser.getID() == NONE)
         throw UserNotFoundException(__FILE__, typeid(*this).name(), __LINE__);
     if (tmpUser.getLogin() != new_login)
-        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
+        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);*/
 }
 
 void UserRules::updateUserPassword(int id, std::string new_password)
@@ -126,11 +126,11 @@ void UserRules::updateUserPassword(int id, std::string new_password)
         throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
     tmpUser.setPassword(new_password);
     this->repository->updateEl(tmpUser);
-    tmpUser = this->repository->getUserByID(id);
+    /*tmpUser = this->repository->getUserByID(id);
     if (tmpUser.getID() == NONE)
         throw UserNotFoundException(__FILE__, typeid(*this).name(), __LINE__);
     if (tmpUser.getPassword() != new_password)
-        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
+        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);*/
 }
 
 void UserRules::updateUserPermission(int id, Roles new_permission) {
@@ -141,11 +141,11 @@ void UserRules::updateUserPermission(int id, Roles new_permission) {
         throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
     tmpUser.setPermission(new_permission);
     this->repository->updateEl(tmpUser);
-    tmpUser = this->repository->getUserByID(id);
+    /*tmpUser = this->repository->getUserByID(id);
     if (tmpUser.getID() == NONE)
         throw UserNotFoundException(__FILE__, typeid(*this).name(), __LINE__);
     if (tmpUser.getUserRole() != new_permission)
-        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);
+        throw UserUpdateErrorException(__FILE__, typeid(*this).name(), __LINE__);*/
 }
 
 
