@@ -6,321 +6,184 @@
 #include "../../src/data_access/MockRepositories/MockManagerRepository.h"
 #include "../../src/data_access/MockRepositories/MockProductRepository.h"
 #include "../../src/data_access/MockRepositories/MockUserRepository.h"
+#include "../../src/logger/Logger.h"
 
-struct TestBankRules : public testing::Test {
-  Logger *logger;
-
-  void SetUp() {logger = new Logger("log_file.txt", FATAL);}
-  void TearDown() { delete logger; }
-};
-
-/*TEST(TestRequestRules, TestGetRequestPositive)
-{
+struct TestRequestRules : public testing::Test {
+    Logger *logger;
     std::vector<Request> requests;
     std::vector<Manager> managers;
     std::vector<Client> clients;
     std::vector<Product> products;
     std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
+
+    void SetUp() 
+    {
+        logger = new Logger("log_file.txt", FATAL);
+        requests.push_back(Request(1, 1, 1, NONE, 100000, 365, "2023", OPENED));
+        requests.push_back(Request(2, 2, 2, 1, 100000, 365, "2023", APPROVED));
+        requests.push_back(Request(3, 1, 2, 1, 30000, 365, "2023", APPROVED));
+        managers.push_back(Manager(1, 1, 1));
+        managers.push_back(Manager(2, 2, 2));
+        users.push_back(User(1, "abc", "11111", MANAGER));
+        users.push_back(User(2, "abd", "11112", MANAGER));
+        users.push_back(User(3, "abe", "11113", CLIENT));
+        users.push_back(User(4, "abf", "11114", CLIENT));
+        clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
+        clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
+        products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
+        products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
+    }
+    void TearDown() 
+    { 
+        delete logger;
+    }
+};
+
+TEST_F(TestRequestRules, TestGetRequestPositive)
+{
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     Request tmpRequest = rrules.getRequest(2);
+
     EXPECT_EQ(tmpRequest.getID(), 2);
     EXPECT_EQ(tmpRequest.getClientID(), 2);
     EXPECT_EQ(tmpRequest.getProductID(), 2);
     EXPECT_EQ(tmpRequest.getManagerID(), 1);
     EXPECT_EQ(tmpRequest.getSum(), 100000);
     EXPECT_EQ(tmpRequest.getDuration(), 365);
-    EXPECT_EQ(tmpRequest.getDate(), 2023);
+    EXPECT_EQ(tmpRequest.getDate(), "2023");
     EXPECT_EQ(tmpRequest.getState(), APPROVED);
 }
 
-TEST(TestRequestRules, TestGetRequestNegative)
+TEST_F(TestRequestRules, TestGetRequestNegative)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.getRequest(3), RequestNotFoundException);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.getRequest(4), RequestNotFoundException);
 }
 
-TEST(TestRequestRules, TestGetRequestsByClientPositive)
+TEST_F(TestRequestRules, TestGetRequestsByClientPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     requests = rrules.getRequestByClient(1);
+
     EXPECT_EQ(requests.size(), 2);
     EXPECT_EQ(requests[0].getID(), 1);
     EXPECT_EQ(requests[1].getID(), 3);
 }
 
-TEST(TestRequestRules, TestGetRequestsByClientNegative)
+TEST_F(TestRequestRules, TestGetRequestsByClientNegative)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.getRequestByClient(3), RequestGetErrorException);
 }
 
-TEST(TestRequestRules, TestGetRequestsByStatePositive)
+TEST_F(TestRequestRules, TestGetRequestsByStatePositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     requests = rrules.getRequestByState(APPROVED);
+
     EXPECT_EQ(requests.size(), 2);
     EXPECT_EQ(requests[0].getID(), 2);
     EXPECT_EQ(requests[1].getID(), 3);
 }
 
-TEST(TestRequestRules, TestGetRequestsBySumPositive)
+TEST_F(TestRequestRules, TestGetRequestsBySumPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 200000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 30000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    requests = rrules.getRequestBySum(20000, 100000);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    requests = rrules.getRequestBySum(40000, 100000);
+
     EXPECT_EQ(requests.size(), 2);
     EXPECT_EQ(requests[0].getID(), 1);
-    EXPECT_EQ(requests[1].getID(), 3);
+    EXPECT_EQ(requests[1].getID(), 2);
 }
 
 
-TEST(TestRequestRules, TestGetRequestsBySumNegativeIncorrectSum)
+TEST_F(TestRequestRules, TestGetRequestsBySumNegativeIncorrectSum)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.getRequestBySum(-10000, 900000), RequestGetErrorException);
 }
 
-TEST(TestRequestRules, TestGetRequestsBySumNegativeMinSumBiggerThanMaxSum)
+TEST_F(TestRequestRules, TestGetRequestsBySumNegativeMinSumBiggerThanMaxSum)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.getRequestBySum(100000, 9000), RequestGetErrorException);
 }
 
-TEST(TestRequestRules, TestGetRequestsByManager)
+TEST_F(TestRequestRules, TestGetRequestsByManager)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 200000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 30000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     requests = rrules.getRequestByManager(1);
+
     EXPECT_EQ(requests.size(), 2);
     EXPECT_EQ(requests[0].getID(), 2);
     EXPECT_EQ(requests[1].getID(), 3);
 }
 
-TEST(TestRequestRules, TestGetAllRequests)
+TEST_F(TestRequestRules, TestGetAllRequests)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 200000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 30000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     requests = rrules.getAllRequests();
+
     EXPECT_EQ(requests.size(), 3);
     EXPECT_EQ(requests[0].getID(), 1);
     EXPECT_EQ(requests[1].getID(), 2);
@@ -328,833 +191,367 @@ TEST(TestRequestRules, TestGetAllRequests)
 }
 
 
-TEST(TestRequestRules, TestMakeRequestPositive)
+TEST_F(TestRequestRules, TestMakeRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    int id = rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=60000, .duration=365, .date=2023, .state=OPENED});
-    Request tmpRequest = rrules.getRequest(id);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
 
-    EXPECT_EQ(tmpRequest.getID(), id);
-    EXPECT_EQ(tmpRequest.getClientID(), 1);
-    EXPECT_EQ(tmpRequest.getProductID(), 1);
-    EXPECT_EQ(tmpRequest.getManagerID(), NONE);
-    EXPECT_EQ(tmpRequest.getSum(), 60000);
-    EXPECT_EQ(tmpRequest.getState(), OPENED);
+    int id = rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=60000, .duration=365, .date="2023", .state=OPENED});
+
+    EXPECT_EQ(rrules.getRequest(id).getID(), id);
+    EXPECT_EQ(rrules.getRequest(id).getClientID(), 1);
+    EXPECT_EQ(rrules.getRequest(id).getProductID(), 1);
+    EXPECT_EQ(rrules.getRequest(id).getManagerID(), NONE);
+    EXPECT_EQ(rrules.getRequest(id).getSum(), 60000);
+    EXPECT_EQ(rrules.getRequest(id).getState(), OPENED);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeClientNotFullAccount)
+TEST_F(TestRequestRules, TestMakeRequestNegativeClientNotFullAccount)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(5, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=60000, .duration=365, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(5, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=60000, .duration=365, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeSmallSumForProduct)
+TEST_F(TestRequestRules, TestMakeRequestNegativeSmallSumForProduct)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=40000, .duration=365, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=40000, .duration=365, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeBigSumForProduct)
+TEST_F(TestRequestRules, TestMakeRequestNegativeBigSumForProduct)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=4000000, .duration=365, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=4000000, .duration=365, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeLongDurationForProduct)
+TEST_F(TestRequestRules, TestMakeRequestNegativeLongDurationForProduct)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=800, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=800, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
 
-TEST(TestRequestRules, TestMakeRequestNegativeShortDurationForProduct)
+TEST_F(TestRequestRules, TestMakeRequestNegativeShortDurationForProduct)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=10, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=10, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeIncorrectState)
+TEST_F(TestRequestRules, TestMakeRequestNegativeIncorrectState)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=365, .date=2023, .state=CLOSED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=365, .date="2023", .state=CLOSED}), 
     RequestAddErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeHaveManager)
+TEST_F(TestRequestRules, TestMakeRequestNegativeHaveManager)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=1, .sum=900000, .duration=365, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(3, {.client_id=1, .product_id=1, .manager_id=1, .sum=900000, .duration=365, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestMakeRequestNegativeNotClient)
+TEST_F(TestRequestRules, TestMakeRequestNegativeNotClient)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    users.push_back(User(5, "abl", "11115", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    ASSERT_THROW(rrules.makeRequest(1, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=365, .date=2023, .state=OPENED}), 
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
+    ASSERT_THROW(rrules.makeRequest(1, {.client_id=1, .product_id=1, .manager_id=NONE, .sum=900000, .duration=365, .date="2023", .state=OPENED}), 
     RequestMakeErrorException);
 }
 
-TEST(TestRequestRules, TestConfirmRequestPositive)
+TEST_F(TestRequestRules, TestConfirmRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     rrules.confirmRequest(1, 1);
-    Request tmpRequest = rrules.getRequest(1);
-    EXPECT_EQ(tmpRequest.getState(), APPROVED);
-    EXPECT_EQ(tmpRequest.getManagerID(), 1);
+
+    EXPECT_EQ(rrules.getRequest(1).getState(), APPROVED);
+    EXPECT_EQ(rrules.getRequest(1).getManagerID(), 1);
 }
 
 
-TEST(TestRequestRules, TestConfirmRequestNegativeNotOpenedRequest)
+TEST_F(TestRequestRules, TestConfirmRequestNegativeNotOpenedRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, CLOSED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.confirmRequest(1, 2), RequestConfirmErrorException);
 }
 
-TEST(TestRequestRules, TestConfirmRequestNegativeNonExistentRequest)
+TEST_F(TestRequestRules, TestConfirmRequestNegativeNonExistentRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, CLOSED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.confirmRequest(4, 2), RequestNotFoundException);
 }
 
-TEST(TestRequestRules, TestConfirmRequestNegativeManagerFromAnotherBank)
+TEST_F(TestRequestRules, TestConfirmRequestNegativeManagerFromAnotherBank)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.confirmRequest(1, 2), RequestConfirmErrorException);
 }
 
-TEST(TestRequestRules, TestConfirmRequestNegativeNonExistentManager)
+TEST_F(TestRequestRules, TestConfirmRequestNegativeNonExistentManager)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.confirmRequest(1, 3), RequestConfirmErrorException);
 }
 
 
-TEST(TestRequestRules, TestRejectRequestPositive)
+TEST_F(TestRequestRules, TestRejectRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     rrules.rejectRequest(1, 1);
+
     Request tmpRequest = rrules.getRequest(1);
-    EXPECT_EQ(tmpRequest.getState(), REJECTED);
-    EXPECT_EQ(tmpRequest.getManagerID(), 1);
+    EXPECT_EQ(rrules.getRequest(1).getState(), REJECTED);
+    EXPECT_EQ(rrules.getRequest(1).getManagerID(), 1);
 }
 
 
-TEST(TestRequestRules, TestRejectRequestNegativeManagerFromAnotherBank)
+TEST_F(TestRequestRules, TestRejectRequestNegativeManagerFromAnotherBank)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rejectRequest(1, 2), RequestRejectErrorException);
 }
 
-TEST(TestRequestRules, TestRejectRequestNegativeNonExistentManager)
+TEST_F(TestRequestRules, TestRejectRequestNegativeNonExistentManager)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rejectRequest(1, 3), RequestRejectErrorException);
 }
 
-TEST(TestRequestRules, TestRejectRequestNegativeNonExistentRequest)
+TEST_F(TestRequestRules, TestRejectRequestNegativeNonExistentRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rejectRequest(4, 1), RequestNotFoundException);
 }
 
-TEST(TestRequestRules, TestRejectRequestNegativeNotOpenedRequest)
+TEST_F(TestRequestRules, TestRejectRequestNegativeNotOpenedRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, CLOSED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rejectRequest(1, 2), RequestRejectErrorException);
 }
 
 
-TEST(TestRequestRules, TestUpdateRequestPositive)
+TEST_F(TestRequestRules, TestUpdateRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    Request tmpRequest = rrules.getRequest(1);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+    Request tmpRequest = Request(1, 1, 1, NONE, 100000, 365, "2023", OPENED);
     tmpRequest.setSum(120000);
+
     rrules.updateRequest(tmpRequest);
-    tmpRequest = rrules.getRequest(1);
-    EXPECT_EQ(tmpRequest.getID(), 1);
-    EXPECT_EQ(tmpRequest.getSum(), 120000);
+
+    EXPECT_EQ(rrules.getRequest(1).getID(), 1);
+    EXPECT_EQ(rrules.getRequest(1).getSum(), 120000);
 }
 
-TEST(TestRequestRules, TestUpdateRequestNegativeIncorrectSum)
+TEST_F(TestRequestRules, TestUpdateRequestNegativeIncorrectSum)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
-    Request tmpRequest = rrules.getRequest(1);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+    Request tmpRequest = Request(1, 1, 1, NONE, 100000, 365, "2023", OPENED);
     tmpRequest.setSum(-120000);
+
     ASSERT_THROW(rrules.updateRequest(tmpRequest), RequestUpdateErrorException);
 }
 
-TEST(TestRequestRules, TestDeleteRequestPositive)
+TEST_F(TestRequestRules, TestDeleteRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     rrules.deleteRequest(2);
+
     ASSERT_THROW(rrules.getRequest(2), RequestNotFoundException);
 }
 
-TEST(TestRequestRules, TestDeleteRequestNegative)
+TEST_F(TestRequestRules, TestDeleteRequestNegative)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.deleteRequest(4), RequestNotFoundException);
 }
 
-TEST(TestRequestRules, TestRateRequestPositive)
+TEST_F(TestRequestRules, TestRateRequestPositive)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     rrules.rateProduct(2, 4, 5);
-    Request tmpRequest = rrules.getRequest(2);
-    EXPECT_EQ(tmpRequest.getState(), APPROVED_SCORED);
+
+    EXPECT_EQ(rrules.getRequest(2).getState(), APPROVED_SCORED);
 }
 
-TEST(TestRequestRules, TestRateRequestNegativeOpenedRequest)
+TEST_F(TestRequestRules, TestRateRequestNegativeOpenedRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rateProduct(1, 3, 5), ProductRateErrorException);
 }
 
-TEST(TestRequestRules, TestRateRequestNegativeAnotherClient)
+TEST_F(TestRequestRules, TestRateRequestNegativeAnotherClient)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rateProduct(1, 4, 5), ProductRateErrorException);
 }
 
-TEST(TestRequestRules, TestRateRequestNegativeNonExistentRequest)
+TEST_F(TestRequestRules, TestRateRequestNegativeNonExistentRequest)
 {
-    std::vector<Request> requests;
-    std::vector<Manager> managers;
-    std::vector<Client> clients;
-    std::vector<Product> products;
-    std::vector<User> users;
-    requests.push_back(Request(1, 1, 1, NONE, 100000, 365, 2023, OPENED));
-    requests.push_back(Request(2, 2, 2, 1, 100000, 365, 2023, APPROVED));
-    requests.push_back(Request(3, 1, 2, 1, 100000, 365, 2023, APPROVED));
-    managers.push_back(Manager(1, 1, 1));
-    managers.push_back(Manager(2, 2, 2));
-    users.push_back(User(1, "abc", "11111", MANAGER));
-    users.push_back(User(2, "abd", "11112", MANAGER));
-    users.push_back(User(3, "abe", "11113", CLIENT));
-    users.push_back(User(4, "abf", "11114", CLIENT));
-    clients.push_back(Client(1, 3, "a", "a", "a", 77777, 1980, "Street 8", "a@mail.ru", "+79183456780"));
-    clients.push_back(Client(2, 4, "b", "b", "b", 77779, 1986, "Street 9", "b@mail.ru", "+79183456781"));
-    products.push_back(Product(1, 1, DEPOSIT, "first", 7.5, 180, 750,  50000, 1000000, ROUBLE, 0, 0));
-    products.push_back(Product(2, 1, CREDIT, "second", 7.5, 180, 750,  50000, 1000000, DOLLAR, 0, 0));
     MockRequestRepository requestRepository(requests);
     MockManagerRepository managerRepository(managers);
     MockProductRepository productRepository(products);
     MockClientRepository clientRepository(clients);
     MockUserRepository userRepository(users);
-    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository);
+    RequestRules rrules(requestRepository, clientRepository, managerRepository, productRepository, userRepository, *logger);
+
     ASSERT_THROW(rrules.rateProduct(4, 4, 5), RequestNotFoundException);
-}*/
+}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

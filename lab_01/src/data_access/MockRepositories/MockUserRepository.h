@@ -21,6 +21,7 @@ public:
     void deleteEl(int id) override;
     void updateEl(User user_el) override;
     std::vector<User> getAllUsers() override;
+    void setRole(Roles role) override;
 };
 
 

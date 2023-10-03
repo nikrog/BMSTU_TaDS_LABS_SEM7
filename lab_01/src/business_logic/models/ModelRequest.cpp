@@ -70,7 +70,7 @@ void Request::setDuration(int duration)
 {
     this->duration = duration;
 }
-void Request::setDate(date_t date)
+void Request::setDate(timereq_t date)
 {
     this->date = date;
 }

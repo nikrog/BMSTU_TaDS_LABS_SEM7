@@ -25,7 +25,7 @@ std::vector<Request> MockRequestRepository::getRequestByState(State_t state)
     
     return res_requests;
 }
-std::vector<Request> MockRequestRepository::getRequestByDate(date_t date)
+std::vector<Request> MockRequestRepository::getRequestByDate(timereq_t date)
 {
     std::vector<Request> res_requests;
     for (Request tmpRequest : this->requests)
@@ -115,5 +115,22 @@ void MockRequestRepository::updateEl(Request req_el)
             this->requests[tmpRequest.getID() - 1].setState(req_el.getState());
         }
     }
+    return;
+}
+
+void MockRequestRepository::callRateProduct(int req_id, int score)
+{
+    return;
+}
+void MockRequestRepository::callMakeRequest(int cl_id, int prod_id, float sum, int dur)
+{
+    return;
+}
+void MockRequestRepository::callConfirmRequest(int req_id, int manager_id)
+{
+    return;
+}
+void MockRequestRepository::callRejectRequest(int req_id, int manager_id)
+{
     return;
 }

@@ -16,25 +16,25 @@ testsBank.exe: TestBankRules.o MockBankRepository.o BankStub.o BankRules.o Model
 testsProduct.exe: TestProductRules.o ProductStub.o BankStub.o ProductRules.o ModelProduct.o ModelBank.o MockBankRepository.o MockProductRepository.o Logger.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
-testsRequest.exe: TestRequestRules.o MockRequestRepository.o MockClientRepository.o MockUserRepository.o MockManagerRepository.o MockProductRepository.o RequestRules.o ModelRequest.o ModelProduct.o ModelUser.o ModelClient.o ModelManager.o exceptions.o
+testsRequest.exe: TestRequestRules.o MockRequestRepository.o MockClientRepository.o MockUserRepository.o MockManagerRepository.o MockProductRepository.o RequestRules.o ModelRequest.o ModelProduct.o ModelUser.o ModelClient.o ModelManager.o Logger.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
 ModelUser.o: ../../src/business_logic/models/ModelUser.cpp
 	g++ -c -o $@ $<
 
-ModelManager.o: ../../business_logic/models/ModelManager.cpp
+ModelManager.o: ../../src/business_logic/models/ModelManager.cpp
 	g++ -c -o $@ $<
 
 ModelBank.o: ../../src/business_logic/models/ModelBank.cpp
 	g++ -c -o $@ $<
 
-ModelClient.o: ../../business_logic/models/ModelClient.cpp
+ModelClient.o: ../../src/business_logic/models/ModelClient.cpp
 	g++ -c -o $@ $<
 
 ModelProduct.o: ../../src/business_logic/models/ModelProduct.cpp
 	g++ -c -o $@ $<
 
-ModelRequest.o: ../../business_logic/models/ModelRequest.cpp
+ModelRequest.o: ../../src/business_logic/models/ModelRequest.cpp
 	g++ -c -o $@ $<
 
 TestUserRules.o: TestUserRules.cpp
@@ -58,10 +58,10 @@ TestProductRules.o: TestProductRules.cpp
 MockUserRepository.o: ../../src/data_access/MockRepositories/MockUserRepository.cpp
 	g++ -c -o $@ $<
 
-MockManagerRepository.o: ../../data_access/MockRepositories/MockManagerRepository.cpp
+MockManagerRepository.o: ../../src/data_access/MockRepositories/MockManagerRepository.cpp
 	g++ -c -o $@ $<
 
-MockRequestRepository.o: ../../data_access/MockRepositories/MockRequestRepository.cpp
+MockRequestRepository.o: ../../src/data_access/MockRepositories/MockRequestRepository.cpp
 	g++ -c -o $@ $<
 
 MockBankRepository.o: ../../src/data_access/MockRepositories/MockBankRepository.cpp
@@ -73,7 +73,7 @@ MockProductRepository.o: ../../src/data_access/MockRepositories/MockProductRepos
 ProductStub.o: ../stub/ProductStub.cpp
 	g++ -c -o $@ $<
 
-MockClientRepository.o: ../../data_access/MockRepositories/MockClientRepository.cpp
+MockClientRepository.o: ../../src/data_access/MockRepositories/MockClientRepository.cpp
 	g++ -c -o $@ $<
 
 BankStub.o: ../stub/BankStub.cpp
@@ -82,16 +82,16 @@ BankStub.o: ../stub/BankStub.cpp
 UserRules.o: ../../src/business_logic/rules/UserRules.cpp
 	g++ -c -o $@ $<
 
-ManagerRules.o: ../../business_logic/rules/ManagerRules.cpp
+ManagerRules.o: ../../src/business_logic/rules/ManagerRules.cpp
 	g++ -c -o $@ $<
 
 ProductRules.o: ../../src/business_logic/rules/ProductRules.cpp
 	g++ -c -o $@ $<
 
-RequestRules.o: ../../business_logic/rules/RequestRules.cpp
+RequestRules.o: ../../src/business_logic/rules/RequestRules.cpp
 	g++ -c -o $@ $<
 
-ClientRules.o: ../../business_logic/rules/ClientRules.cpp
+ClientRules.o: ../../src/business_logic/rules/ClientRules.cpp
 	g++ -c -o $@ $<
 
 BankRules.o: ../../src/business_logic/rules/BankRules.cpp
@@ -103,10 +103,19 @@ exceptions.o: ../../src/business_logic/exceptions/exceptions.cpp
 Logger.o: ../../src/logger/Logger.cpp
 	g++ -c -o $@ $<
 
-
-%.o: ../../business_logic/rules/%.c
+%.o: ../../src/business_logic/models/%.cpp
 	g++ -c -o $@ $<
+	
+%.o: ../../src/data_access/MockRepositories/%.cpp
+	g++ -c -o $@ $<
+
+%.o: ../../src/business_logic/rules/%.cpp
+	g++ -c -o $@ $<
+	
 %.o: ../builders/%.cpp
+	g++ -c -o $@ $<
+
+%.o: ../stub/%.cpp
 	g++ -c -o $@ $<
 	
 f.o: f.cpp

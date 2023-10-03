@@ -42,7 +42,7 @@ public:
 
     void setSum(float sum);
     void setDuration(int duration);
-    void setDate(date_t date);
+    void setDate(timereq_t date);
     void setState(State_t state);
     void setManagerID(int manager_id);
 };

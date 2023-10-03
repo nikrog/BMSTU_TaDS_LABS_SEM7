@@ -69,3 +69,8 @@ std::vector<User> MockUserRepository::getAllUsers()
 {
     return this->users;
 }
+
+void MockUserRepository::setRole(Roles role)
+{
+    return;
+}
