@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites tests="17" failures="0" disabled="0" errors="0" time="0.002" timestamp="2023-10-04T16:43:25.747" random_seed="33222" name="AllTests">
-  <testsuite name="TestUserRules" tests="17" failures="0" disabled="0" skipped="0" errors="0" time="0.002" timestamp="2023-10-04T16:43:25.748">
-    <testcase name="TestUpdateUserNegativeExistedLogin" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestGetAllUsers" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestDeleteUserNegative" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestUpdateUserPermissionPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestUpdateUserPasswordPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestUpdateUserLoginPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.748" classname="TestUserRules" />
-    <testcase name="TestAddUserIncorrectLoginDuplicate" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestGetUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestGetUserIDPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestUpdateUserNegativeShortPassword" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestGetUserNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestAddUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestAddUserIncorrectPasswordShort" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestAddUserIncorrectLoginEmpty" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestUpdateUserNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.749" classname="TestUserRules" />
-    <testcase name="TestDeleteUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.750" classname="TestUserRules" />
-    <testcase name="TestGetUserIDNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.750" classname="TestUserRules" />
+<testsuites tests="17" failures="0" disabled="0" errors="0" time="0.002" timestamp="2023-10-04T17:07:45.498" random_seed="92987" name="AllTests">
+  <testsuite name="TestUserRules" tests="17" failures="0" disabled="0" skipped="0" errors="0" time="0.002" timestamp="2023-10-04T17:07:45.498">
+    <testcase name="TestGetAllUsers" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestGetUserIDNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestUpdateUserNegativeExistedLogin" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestDeleteUserNegative" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestUpdateUserPasswordPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestGetUserNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.498" classname="TestUserRules" />
+    <testcase name="TestAddUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestUpdateUserNegativeShortPassword" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestAddUserIncorrectLoginDuplicate" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestUpdateUserPermissionPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestDeleteUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestUpdateUserLoginPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestAddUserIncorrectLoginEmpty" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestGetUserPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestUpdateUserNegativeNotFound" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestAddUserIncorrectPasswordShort" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.499" classname="TestUserRules" />
+    <testcase name="TestGetUserIDPositive" status="run" result="completed" time="0" timestamp="2023-10-04T17:07:45.500" classname="TestUserRules" />
   </testsuite>
 </testsuites>

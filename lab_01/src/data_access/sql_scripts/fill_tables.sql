@@ -46,14 +46,32 @@ INSERT INTO BA.managers (user_id, bank_id) VALUES
 
 INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time,
                          min_sum, max_sum, currency, sum_rating, count_rating)  VALUES
-(0, 'test', 1, 7.5, 10, 750, 10000, 1000000, 0, 0, 0);
+(0, 'test', 1, 7.5, 10, 750, 10000, 1000000, 0, 5, 1);
 
 INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time,
                          min_sum, max_sum, currency, sum_rating, count_rating)  VALUES
-(1, 'test_credit', 1, 12.5, 1, 750, 100000, 3000000, 0, 21, 5);
+(1, 'test_credit', 2, 12.5, 1, 750, 100000, 3000000, 0, 21, 5);
 
-copy BA.products (ptype, name, bank_id, rate, min_time, max_time,
-                         min_sum, max_sum, currency, sum_rating, count_rating)
-    from '/db_data/products.csv' delimiter ',';
+INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time,
+                         min_sum, max_sum, currency, sum_rating, count_rating)  VALUES
+(0, 'new', 2, 15, 1, 365, 10000, 1000000, 1, 0, 0);
+--copy BA.products (ptype, name, bank_id, rate, min_time, max_time,
+--                         min_sum, max_sum, currency, sum_rating, count_rating)
+--    from '/db_data/products.csv' delimiter ',';
 
+INSERT INTO BA.requests (client_id, product_id, manager_id, sum, duration, date, state) VALUES
+(1, 1, 1, 60000, 365, '2023-10-04', 1);
 
+INSERT INTO BA.requests (client_id, product_id, manager_id, sum, duration, date, state) VALUES
+(2, 1, 1, 90000, 400, '2023-09-04', 2);
+
+CREATE OR REPLACE FUNCTION BA.calc_rating(prod_id int)
+RETURNS numeric AS '
+    SELECT
+    CASE
+        WHEN count_rating > 0 THEN sum_rating / CAST (count_rating AS float)
+        ELSE 0
+    END
+    FROM BA.products
+    WHERE product_id = prod_id'
+LANGUAGE SQL;
