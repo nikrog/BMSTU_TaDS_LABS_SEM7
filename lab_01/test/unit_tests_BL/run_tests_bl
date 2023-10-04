@@ -6,4 +6,6 @@ export GTEST_SHUFFLE=0
 ./testsUserMock.exe
 ./testsBank.exe
 ./testsProduct.exe
+./testsRequest.exe
+./testsClient.exe
 python2 ../gen_report_scripts/genHtmlReportFromGtest.py "out/gtest_report.html" "in/*.xml"

@@ -4,10 +4,10 @@ testsUser.exe: TestUserRules.o MockUserRepository.o UserRules.o ModelUser.o exce
 testsUserMock.exe: TestUserRulesMock.o MockUserRepository.o UserRules.o ModelUser.o UserOM.o UserBuilder.o Logger.o exceptions.o
 	g++ -o $@ $^ -lgtest -lgmock -pthread
 	
-testsManager.exe: TestManagerRules.o MockManagerRepository.o MockUserRepository.o MockBankRepository.o MockClientRepository.o ManagerRules.o ModelManager.o ModelClient.o ModelUser.o ModelBank.o exceptions.o
+testsManager.exe: TestManagerRules.o MockManagerRepository.o MockUserRepository.o MockBankRepository.o MockClientRepository.o ManagerRules.o ModelManager.o ModelClient.o ModelUser.o ModelBank.o Logger.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
-testsClient.exe: TestClientRules.o MockClientRepository.o MockUserRepository.o MockManagerRepository.o ClientRules.o ModelClient.o ModelManager.o ModelUser.o exceptions.o
+testsClient.exe: TestClientRules.o MockClientRepository.o MockUserRepository.o MockManagerRepository.o ClientRules.o ModelClient.o ModelManager.o ModelUser.o Logger.o exceptions.o
 	g++ -o $@ $^ -lgtest
 
 testsBank.exe: TestBankRules.o MockBankRepository.o BankStub.o BankRules.o ModelBank.o Logger.o exceptions.o

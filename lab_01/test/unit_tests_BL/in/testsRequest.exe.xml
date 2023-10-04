@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="37" failures="0" disabled="0" errors="0" time="0.001" timestamp="2023-10-04T16:43:25.779" random_seed="33254" name="AllTests">
+  <testsuite name="TestRequestRules" tests="37" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2023-10-04T16:43:25.779">
+    <testcase name="TestGetAllRequests" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.779" classname="TestRequestRules" />
+    <testcase name="TestRejectRequestNegativeNonExistentRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeHaveManager" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsBySumNegativeMinSumBiggerThanMaxSum" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestRejectRequestNegativeNotOpenedRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestRateRequestNegativeOpenedRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestGetRequestNegative" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestConfirmRequestNegativeManagerFromAnotherBank" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestRejectRequestNegativeNonExistentManager" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestUpdateRequestNegativeIncorrectSum" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeShortDurationForProduct" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsBySumPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeSmallSumForProduct" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeLongDurationForProduct" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestConfirmRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsByClientNegative" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsBySumNegativeIncorrectSum" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestUpdateRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestConfirmRequestNegativeNotOpenedRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestConfirmRequestNegativeNonExistentRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestDeleteRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeClientNotFullAccount" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestRateRequestNegativeAnotherClient" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestConfirmRequestNegativeNonExistentManager" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeNotClient" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.780" classname="TestRequestRules" />
+    <testcase name="TestRejectRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeIncorrectState" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestMakeRequestNegativeBigSumForProduct" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsByStatePositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestRateRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestGetRequestPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsByManager" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestRateRequestNegativeNonExistentRequest" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestRejectRequestNegativeManagerFromAnotherBank" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestDeleteRequestNegative" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+    <testcase name="TestGetRequestsByClientPositive" status="run" result="completed" time="0" timestamp="2023-10-04T16:43:25.781" classname="TestRequestRules" />
+  </testsuite>
+</testsuites>
