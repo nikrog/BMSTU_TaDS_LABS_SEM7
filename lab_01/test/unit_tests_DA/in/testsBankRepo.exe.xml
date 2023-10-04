@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="6" failures="0" disabled="0" errors="0" time="0.082" timestamp="2023-10-04T22:12:00.658" name="AllTests">
+  <testsuite name="TestPgBankRepo" tests="6" failures="0" disabled="0" skipped="0" errors="0" time="0.082" timestamp="2023-10-04T22:12:00.658">
+    <testcase name="TestGetBankByID" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:00.658" classname="TestPgBankRepo" />
+    <testcase name="TestGetBankByName" status="run" result="completed" time="0.011" timestamp="2023-10-04T22:12:00.673" classname="TestPgBankRepo" />
+    <testcase name="TestGetAllBanks" status="run" result="completed" time="0.013" timestamp="2023-10-04T22:12:00.684" classname="TestPgBankRepo" />
+    <testcase name="TestAddBank" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:00.697" classname="TestPgBankRepo" />
+    <testcase name="TestUpdateBank" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:00.712" classname="TestPgBankRepo" />
+    <testcase name="TestDeleteBank" status="run" result="completed" time="0.013" timestamp="2023-10-04T22:12:00.727" classname="TestPgBankRepo" />
+  </testsuite>
+</testsuites>

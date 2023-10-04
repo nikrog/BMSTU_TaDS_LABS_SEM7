@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="13" failures="0" disabled="0" errors="0" time="0.19" timestamp="2023-10-04T22:12:00.951" name="AllTests">
+  <testsuite name="TestPgProductRepo" tests="13" failures="0" disabled="0" skipped="0" errors="0" time="0.19" timestamp="2023-10-04T22:12:00.951">
+    <testcase name="TestGetProductByID" status="run" result="completed" time="0.016" timestamp="2023-10-04T22:12:00.951" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByName" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:00.968" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByRate" status="run" result="completed" time="0.011" timestamp="2023-10-04T22:12:00.983" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByBank" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:00.994" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductBySum" status="run" result="completed" time="0.011" timestamp="2023-10-04T22:12:01.008" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByTime" status="run" result="completed" time="0.013" timestamp="2023-10-04T22:12:01.020" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByType" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:01.033" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByRating" status="run" result="completed" time="0.011" timestamp="2023-10-04T22:12:01.048" classname="TestPgProductRepo" />
+    <testcase name="TestGetProductByCurrency" status="run" result="completed" time="0.011" timestamp="2023-10-04T22:12:01.060" classname="TestPgProductRepo" />
+    <testcase name="TestGetAllProducts" status="run" result="completed" time="0.012" timestamp="2023-10-04T22:12:01.071" classname="TestPgProductRepo" />
+    <testcase name="TestAddProduct" status="run" result="completed" time="0.021" timestamp="2023-10-04T22:12:01.084" classname="TestPgProductRepo" />
+    <testcase name="TestUpdateProduct" status="run" result="completed" time="0.018" timestamp="2023-10-04T22:12:01.106" classname="TestPgProductRepo" />
+    <testcase name="TestDeleteProduct" status="run" result="completed" time="0.017" timestamp="2023-10-04T22:12:01.124" classname="TestPgProductRepo" />
+  </testsuite>
+</testsuites>

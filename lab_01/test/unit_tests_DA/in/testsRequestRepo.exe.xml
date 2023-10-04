@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="11" failures="0" disabled="0" errors="0" time="0.187" timestamp="2023-10-04T22:12:01.152" name="AllTests">
+  <testsuite name="TestPgRequestRepo" tests="11" failures="0" disabled="0" skipped="0" errors="0" time="0.187" timestamp="2023-10-04T22:12:01.152">
+    <testcase name="TestGetRequestByID" status="run" result="completed" time="0.015" timestamp="2023-10-04T22:12:01.152" classname="TestPgRequestRepo" />
+    <testcase name="TestGetRequestByState" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:01.168" classname="TestPgRequestRepo" />
+    <testcase name="TestGetRequestByClient" status="run" result="completed" time="0.017" timestamp="2023-10-04T22:12:01.182" classname="TestPgRequestRepo" />
+    <testcase name="TestGetRequestBySum" status="run" result="completed" time="0.016" timestamp="2023-10-04T22:12:01.199" classname="TestPgRequestRepo" />
+    <testcase name="TestGetRequestByManager" status="run" result="completed" time="0.018" timestamp="2023-10-04T22:12:01.216" classname="TestPgRequestRepo" />
+    <testcase name="TestGetRequestByDate" status="run" result="completed" time="0.016" timestamp="2023-10-04T22:12:01.234" classname="TestPgRequestRepo" />
+    <testcase name="TestRequestByDuration" status="run" result="completed" time="0.016" timestamp="2023-10-04T22:12:01.251" classname="TestPgRequestRepo" />
+    <testcase name="TestGetAllRequests" status="run" result="completed" time="0.022" timestamp="2023-10-04T22:12:01.268" classname="TestPgRequestRepo" />
+    <testcase name="TestUpdateRequest" status="run" result="completed" time="0.02" timestamp="2023-10-04T22:12:01.290" classname="TestPgRequestRepo" />
+    <testcase name="TestAddRequest" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:01.310" classname="TestPgRequestRepo" />
+    <testcase name="TestDeleteRequest" status="run" result="completed" time="0.014" timestamp="2023-10-04T22:12:01.325" classname="TestPgRequestRepo" />
+  </testsuite>
+</testsuites>
