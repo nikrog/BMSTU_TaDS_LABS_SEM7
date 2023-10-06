@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="12" failures="0" disabled="0" errors="0" time="0" timestamp="2023-10-05T21:17:07.639" random_seed="45896" name="AllTests">
+  <testsuite name="TestClientRules" tests="12" failures="0" disabled="0" skipped="0" errors="0" time="0" timestamp="2023-10-05T21:17:07.639">
+    <testcase name="TestGetClientPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestUpdateClientPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestGetAllClients" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestAddClientNegativeEmptySurname" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestGetClientsByFIO" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestAddClientNegativeUserIDBusyByManager" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestAddClientNegativeUserIDBusyByAnotherClient" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestDeleteClientNegative" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestAddClientPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestUpdateClientNegativeEmptyName" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestDeleteClientPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+    <testcase name="TestGetClientNegative" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.639" classname="TestClientRules" />
+  </testsuite>
+</testsuites>

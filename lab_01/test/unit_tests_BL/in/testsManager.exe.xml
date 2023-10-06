@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="12" failures="0" disabled="0" errors="0" time="0" timestamp="2023-10-05T21:17:07.642" random_seed="45899" name="AllTests">
+  <testsuite name="TestManagerRules" tests="12" failures="0" disabled="0" skipped="0" errors="0" time="0" timestamp="2023-10-05T21:17:07.642">
+    <testcase name="TestUpdateManagerPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestUpdateManagerNegativeNotExistentBank" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestGetManagerNegative" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestDeleteManagerNegative" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestAddManagerNegativeNonExistentUser" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestGetManagerPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestGetAllManagers" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestDeleteManagerPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestAddManagerPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestUpdateManagerNegativeNotExistentManager" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestGetManagersByBankPositive" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+    <testcase name="TestAddManagerNegativeNonExistentBank" status="run" result="completed" time="0" timestamp="2023-10-05T21:17:07.642" classname="TestManagerRules" />
+  </testsuite>
+</testsuites>

@@ -1,0 +1,7 @@
+#!/bin/bash
+./testsUser.exe
+./testsManager.exe
+./testsClient.exe
+./testsBank.exe
+./testsProduct.exe
+./testsRequest.exe

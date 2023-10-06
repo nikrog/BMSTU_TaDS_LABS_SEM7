@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="7" failures="0" disabled="0" errors="0" time="0.628" timestamp="2023-10-05T20:53:53.246" random_seed="51489" name="AllTests">
+  <testsuite name="TestPgManagerRepo" tests="7" failures="0" disabled="0" skipped="0" errors="0" time="0.628" timestamp="2023-10-05T20:53:53.246">
+    <testcase name="TestAddManager" status="run" result="completed" time="0.087" timestamp="2023-10-05T20:53:53.246" classname="TestPgManagerRepo" />
+    <testcase name="TestGetManagerByBank" status="run" result="completed" time="0.097" timestamp="2023-10-05T20:53:53.333" classname="TestPgManagerRepo" />
+    <testcase name="TestGetAllManagers" status="run" result="completed" time="0.107" timestamp="2023-10-05T20:53:53.431" classname="TestPgManagerRepo" />
+    <testcase name="TestUpdateManager" status="run" result="completed" time="0.075" timestamp="2023-10-05T20:53:53.538" classname="TestPgManagerRepo" />
+    <testcase name="TestGetManagerByID" status="run" result="completed" time="0.08" timestamp="2023-10-05T20:53:53.614" classname="TestPgManagerRepo" />
+    <testcase name="TestDeleteManager" status="run" result="completed" time="0.088" timestamp="2023-10-05T20:53:53.694" classname="TestPgManagerRepo" />
+    <testcase name="TestGetManagerByUID" status="run" result="completed" time="0.091" timestamp="2023-10-05T20:53:53.783" classname="TestPgManagerRepo" />
+  </testsuite>
+</testsuites>

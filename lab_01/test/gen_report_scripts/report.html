@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Html report from GTest</title>
+<link rel="stylesheet" type="text/css" href="gtest_report.css">
+<script src="extraScript.js"></script>
+
+</head>
+<body>
+
+<table class="aggregate_report">
+<tr><th>Report name</th><th>Total unit tests </th><th>Failed unit tests</th> <th>Execution Time(sec)</th><th>Timestamp</th></tr>
+<tr>
+<td>./test_a.xml</td><td>4</td><td>0</td><td>19.415</td><td>2016-01-26T01:22:46</td>
+</tr>
+
+</table>
+
+<br/>
+
+<table class="utests">
+<tr><th>Test name</th><th>Execution in sec<br/>test_a.xml</th><th>Status and other info<br/>test_a.xml</th></tr>
+<tr>
+<td>MainSimpleTest.DISABLED_TestDisabledTest</td><td>0.0</td><td class="notrun"><img src="gtest_report_disable.png" alt="notok icon" style="width:16px;height:16px;"></td>
+</tr>
+<tr>
+<td>Utils.CompressorTest</td><td>2.0</td><td class="run"><img src="gtest_report_ok.png" alt="ok icon" style="width:16px;height:16px;"><input type="image" src="more_button.png" style="float: right;"  height="30" onclick="ShowDiv('Utils_CompressorTest_file_0details')"></input><div id="Utils_CompressorTest_file_0details" style="display:none;"><pre>custom_info:Hello.This should be generated via ::testing::Test::RecordProperty(key,value)
+</pre></div></td>
+</tr>
+<tr>
+<td>Utils.SortersTest</td><td>5.5</td><td class="run"><img src="gtest_report_ok.png" alt="ok icon" style="width:16px;height:16px;"></td>
+</tr>
+<tr>
+<td>Utils.RandomGeneratorTest</td><td>8.0</td><td class="run"><img src="gtest_report_ok.png" alt="ok icon" style="width:16px;height:16px;"></td>
+</tr>
+
+</table>
+
+</body></html>
