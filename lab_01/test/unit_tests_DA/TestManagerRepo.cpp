@@ -7,12 +7,44 @@
 #include "../../src/data_access/PostgresRepositories/PgClientRepository.h"
 #include "../../src/data_access/PostgresRepositories/PgUserRepository.h"
 
+
+void load_data(ConnectionParams params)
+{   
+    std::string connect_str = params.getString();
+    std::shared_ptr<pqxx::connection> connection = std::make_shared<pqxx::connection>(connect_str.c_str());
+
+    if (connection->is_open())
+    {
+        //std::string sql = PostgreSQLGetUserID().get_str(login);
+        pqxx::work curConnect(*connection);
+        curConnect.exec("TRUNCATE TABLE BA.requests RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.products RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.clients RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.managers RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.banks RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.users RESTART IDENTITY CASCADE;");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('admin', 'admin', 3);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('manager', '11111', 2);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client', '22221', 1);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client2', '22222', 1);");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Альфа банк', 1234, 'Москва', 'alphabank@alpha.ru', '+74953459872', 'alphabank.ru')");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Райфайзен банк', 1235, 'Москва', 'raifaizen@raif.ru', '+74953459873', 'raiffaizen.ru');");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Россельхоз банк', 6667, 'Москва', 'rosselhoz@rsb.ru', '+74953479973', 'rosselhoz.ru');");
+        curConnect.exec("INSERT INTO BA.managers (user_id, bank_id) VALUES (2, 1)");
+        curConnect.commit();
+    }
+}
+
 struct TestPgManagerRepo : public testing::Test {
     ConnectionParams *connectParams;
 
     void SetUp() 
     {
         connectParams = new ConnectionParams("postgres", "localhost", "postgres", "admin", 5435);
+        load_data(*connectParams);
     }
     void TearDown() 
     { 
@@ -77,22 +109,22 @@ TEST_F(TestPgManagerRepo, TestAddManager)
 TEST_F(TestPgManagerRepo, TestUpdateManager)
 {
     PgManagerRepository mrep = PgManagerRepository(*connectParams);
-    Manager tmpManager = Manager(2, 2, 2);
+    Manager tmpManager = Manager(1, 2, 1);
     tmpManager.setBankID(3);
 
     mrep.updateEl(tmpManager);
 
-    EXPECT_EQ(mrep.getManagerByID(2).getBankID(), 3);
+    EXPECT_EQ(mrep.getManagerByID(1).getBankID(), 3);
 }
 
 TEST_F(TestPgManagerRepo, TestDeleteManager)
 {
     PgManagerRepository mrep = PgManagerRepository(*connectParams);
 
-    mrep.deleteEl(2);
+    mrep.deleteEl(1);
 
     std::vector<Manager> managers = mrep.getAllManagers();
-    EXPECT_EQ(managers.size(), 1);
+    EXPECT_EQ(managers.size(), 0);
 }
 
 int main(int argc, char **argv) {

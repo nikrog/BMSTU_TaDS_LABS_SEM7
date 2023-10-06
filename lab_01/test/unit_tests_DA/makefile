@@ -1,19 +1,37 @@
 testsUserRepo.exe: TestUserRepo.o PgUserRepository.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
+testsUserRepo2.exe: TestUserRepo.o PgUserRepository.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+	
 testsBankRepo.exe: TestBankRepo.o PgBankRepository.o BankRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
+testsBankRepo2.exe: TestBankRepo.o PgBankRepository.o BankRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+	
 testsManagerRepo.exe: TestManagerRepo.o PgManagerRepository.o PgUserRepository.o PgBankRepository.o PgClientRepository.o ManagerRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
+testsManagerRepo2.exe: TestManagerRepo.o PgManagerRepository.o PgUserRepository.o PgBankRepository.o PgClientRepository.o ManagerRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+	
 testsClientRepo.exe: TestClientRepo.o PgClientRepository.o PgUserRepository.o PgManagerRepository.o ClientRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+
+testsClientRepo2.exe: TestClientRepo.o PgClientRepository.o PgUserRepository.o PgManagerRepository.o ClientRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
 testsProductRepo.exe: TestProductRepo.o PgProductRepository.o PgBankRepository.o ProductRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
+testsProductRepo2.exe: TestProductRepo.o PgProductRepository.o PgBankRepository.o ProductRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+	
 testsRequestRepo.exe: TestRequestRepo.o PgRequestRepository.o PgUserRepository.o PgManagerRepository.o PgProductRepository.o PgClientRepository.o RequestRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
+	g++ -o $@ $^ -lgtest -lpqxx
+	
+testsRequestRepo2.exe: TestRequestRepo.o PgRequestRepository.o PgUserRepository.o PgManagerRepository.o PgProductRepository.o PgClientRepository.o RequestRules.o ModelUser.o ModelBank.o ModelProduct.o ModelRequest.o ModelManager.o ModelClient.o connection.o PostgresCommands.o exceptions.o
 	g++ -o $@ $^ -lgtest -lpqxx
 
 ModelUser.o: ../../src/business_logic/models/ModelUser.cpp

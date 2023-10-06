@@ -3,12 +3,38 @@
 #include "../../src/data_access/PostgresRepositories/PgUserRepository.h"
 #include "../../src/business_logic/models/ModelUser.h"
 
+void load_data(ConnectionParams params)
+{   
+    std::string connect_str = params.getString();
+    std::shared_ptr<pqxx::connection> connection = std::make_shared<pqxx::connection>(connect_str.c_str());
+
+    if (connection->is_open())
+    {
+        //std::string sql = PostgreSQLGetUserID().get_str(login);
+        pqxx::work curConnect(*connection);
+        curConnect.exec("TRUNCATE TABLE BA.requests RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.products RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.clients RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.managers RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.banks RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.users RESTART IDENTITY CASCADE;");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('admin', 'admin', 3);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('manager', '11111', 2);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client', '22221', 1);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client2', '22222', 1);");
+        /*if (result.size() == 1)
+            res_id = result[0][0].as<int>();*/
+        curConnect.commit();
+    }
+}
+
 struct TestPgUserRepo : public testing::Test {
     ConnectionParams *connectParams;
 
     void SetUp() 
     {
         connectParams = new ConnectionParams("postgres", "localhost", "postgres", "admin", 5435);
+        load_data(*connectParams);
     }
     void TearDown() 
     { 
@@ -18,6 +44,7 @@ struct TestPgUserRepo : public testing::Test {
 
 TEST_F(TestPgUserRepo, TestGetUserID)
 {
+    //load_data(*connectParams);
     //Arrange
     PgUserRepository rep = PgUserRepository(*connectParams);
 
@@ -71,9 +98,9 @@ TEST_F(TestPgUserRepo, TestDeleteUser)
 {
     PgUserRepository rep = PgUserRepository(*connectParams);
 
-    rep.deleteEl(5);
+    rep.deleteEl(4);
 
-    EXPECT_EQ(rep.getAllUsers().size(), 4);
+    EXPECT_EQ(rep.getAllUsers().size(), 3);
 }
 
 TEST_F(TestPgUserRepo, TestGetAllUsers)

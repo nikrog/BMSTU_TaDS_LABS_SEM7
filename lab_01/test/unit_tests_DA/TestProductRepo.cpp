@@ -5,12 +5,56 @@
 #include "../../src/business_logic/models/ModelProduct.h"
 #include "../../src/data_access/PostgresRepositories/PgBankRepository.h"
 
+void load_data(ConnectionParams params)
+{   
+    std::string connect_str = params.getString();
+    std::shared_ptr<pqxx::connection> connection = std::make_shared<pqxx::connection>(connect_str.c_str());
+
+    if (connection->is_open())
+    {
+        //std::string sql = PostgreSQLGetUserID().get_str(login);
+        pqxx::work curConnect(*connection);
+        curConnect.exec("TRUNCATE TABLE BA.requests RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.products RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.clients RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.managers RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.banks RESTART IDENTITY CASCADE;");
+        curConnect.exec("TRUNCATE TABLE BA.users RESTART IDENTITY CASCADE;");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('admin', 'admin', 3);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('manager', '11111', 2);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client', '22221', 1);");
+        curConnect.exec("INSERT INTO BA.users (login, password, permission) VALUES ('client2', '22222', 1);");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Альфа банк', 1234, 'Москва', 'alphabank@alpha.ru', '+74953459872', 'alphabank.ru')");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Райфайзен банк', 1235, 'Москва', 'raifaizen@raif.ru', '+74953459873', 'raiffaizen.ru');");
+        curConnect.exec("INSERT INTO BA.banks (name, license_num, address, email, phone, website) VALUES " \
+        "('Россельхоз банк', 6667, 'Москва', 'rosselhoz@rsb.ru', '+74953479973', 'rosselhoz.ru');");
+        curConnect.exec("INSERT INTO BA.managers (user_id, bank_id) VALUES (2, 1)");
+        curConnect.exec("INSERT INTO BA.clients (name, surname, patronymic, passport_num, birth_date, address, email, phone, user_id) VALUES " \
+        "('b', 'b', 'b', 7777912345, 19860203, 'Street 9', 'b@mail.ru', '+79183456781', 4);");
+        curConnect.exec("INSERT INTO BA.clients (name, surname, patronymic, passport_num, birth_date, address, email, phone, user_id) VALUES " \
+        "('a', 'a', 'a', 7776933333, 19990623, 'Street 6', 'a@mail.ru', '+79183456745', 3);");
+        curConnect.exec("INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time, " \
+        "min_sum, max_sum, currency, sum_rating, count_rating)  VALUES " \
+        "(0, 'test', 1, 7.5, 10, 750, 10000, 1000000, 0, 5, 1);");
+        curConnect.exec("INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time, " \
+        "min_sum, max_sum, currency, sum_rating, count_rating)  VALUES " \
+        "(1, 'test_credit', 2, 12.5, 1, 750, 100000, 3000000, 0, 21, 5);");
+        curConnect.exec("INSERT INTO BA.products (ptype, name, bank_id, rate, min_time, max_time, " \
+        "min_sum, max_sum, currency, sum_rating, count_rating)  VALUES " \
+        "(0, 'new', 2, 15, 1, 365, 10000, 1000000, 1, 0, 0);");
+        curConnect.commit();
+    }
+}
+
 struct TestPgProductRepo : public testing::Test {
     ConnectionParams *connectParams;
 
     void SetUp() 
     {
         connectParams = new ConnectionParams("postgres", "localhost", "postgres", "admin", 5435);
+        load_data(*connectParams);
     }
     void TearDown() 
     { 
@@ -150,22 +194,22 @@ TEST_F(TestPgProductRepo, TestAddProduct)
 TEST_F(TestPgProductRepo, TestUpdateProduct)
 {
     PgProductRepository prep = PgProductRepository(*connectParams);
-    Product tmpProduct = Product(4, 1, CREDIT, "abc", 10.5, 100, 365, 1000,
-    700000, ROUBLE, 10, 3);
+    Product tmpProduct = Product(3, 2, DEPOSIT, "new", 15, 1, 365, 10000,
+    1000000, DOLLAR, 0, 0);
     tmpProduct.setRate(8.5);
 
     prep.updateEl(tmpProduct);
 
-    EXPECT_EQ(prep.getProductByID(4).getRate(), 8.5);
+    EXPECT_EQ(prep.getProductByID(3).getRate(), 8.5);
 }
 
 TEST_F(TestPgProductRepo, TestDeleteProduct)
 {
     PgProductRepository prep = PgProductRepository(*connectParams);
 
-    prep.deleteEl(4);
+    prep.deleteEl(3);
 
-    EXPECT_EQ(prep.getAllProducts().size(), 3);  
+    EXPECT_EQ(prep.getAllProducts().size(), 2);  
 }
 
 int main(int argc, char **argv) {
