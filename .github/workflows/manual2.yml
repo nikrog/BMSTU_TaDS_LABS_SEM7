@@ -31,7 +31,14 @@ jobs:
           make testsProduct.exe
           make testsRequest.exe
       - name: testing
-        run: /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/run_tests_bl
+        run: |
+          export GTEST_SHUFFLE=1
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsUserMock.exe
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsManager.exe
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsClient.exe
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsBank.exe
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsProduct.exe
+          /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/testsRequest.exe
         
   greet:
     # The type of runner that the job will run on
