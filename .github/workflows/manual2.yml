@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: building
         run: |
-          cd /home/runner/work/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/
+          cd /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/
           make testsUserMock.exe
           make testsManager.exe
           make testsClient.exe
@@ -31,7 +31,7 @@ jobs:
           make testsProduct.exe
           make testsRequest.exe
       - name: testing
-        run: /home/runner/work/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/run_tests_bl
+        run: /home/runner/work/BMSTU_TaDS_LABS_SEM7/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/run_tests_bl
         
   greet:
     # The type of runner that the job will run on
@@ -43,4 +43,4 @@ jobs:
     - name: Send greeting
       run: echo "Hello ${{ inputs.name }}"
     - name: se
-      run: echo "1"
+      run: echo "1" && pwd
