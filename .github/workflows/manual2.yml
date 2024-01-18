@@ -9,7 +9,6 @@ jobs:
   build-and-test:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v2
       - name: install gtest
         run: |
           sudo apt install -y libgtest-dev
@@ -20,6 +19,20 @@ jobs:
           sudo cp lib/*.a /usr/lib
           sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a
           sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
+          
+      - uses: actions/checkout@v1
+      - name: building
+        run: |
+          cd /home/runner/work/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/
+          make testsUserMock.exe
+          make testsManager.exe
+          make testsClient.exe
+          make testsBank.exe
+          make testsProduct.exe
+          make testsRequest.exe
+      - name: testing
+        run: /home/runner/work/BMSTU_TaDS_LABS_SEM7/lab_01/test/unit_tests_BL/run_tests_bl
+        
   greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
