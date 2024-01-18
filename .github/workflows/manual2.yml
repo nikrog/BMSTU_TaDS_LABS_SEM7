@@ -9,9 +9,9 @@ jobs:
   build-and-test:
       runs-on: ubuntu-latest
       steps:
-      - name: install gtest
+      - name: install gtest and gmock
         run: |
-          sudo apt install -y libgtest-dev
+          sudo apt install -y libgtest-dev libgmock-dev
           sudo apt-get install cmake
           cd /usr/src/gtest
           sudo cmake CMakeLists.txt
